@@ -1,0 +1,53 @@
+{% extends themes %}
+
+
+{% block body %}
+
+    <style type="text/css">
+        #employee_form_gender label { margin: 0 20px 0 5px; font-weight: normal; font-size: 14px;}
+    </style>
+
+    <!-- breadcrumb -->
+    <ol class="breadcrumb">
+        <li><a href="{{path('front_index')}}">Home</a></li>
+        <li class="active">Contacts</li>
+    </ol>
+    <!-- @breadcrumb -->
+
+    <!-- headings-->
+    <div class="section-header">
+        <h3 class="text-standard"><i class="fa fa-fw fa-arrow-circle-right text-gray-light"></i> Details of Employee<small> Details of employees with multiple contacts</small></h3>
+    </div>
+    <!-- @headings-->
+
+    {% for item in details %}
+        </br>
+        <h3><b>First Name :</b></h3>  <h4>{{ item.firstname }}</h4></br>
+        <h3><b>Last Name :</b></h3> <h4> {{ item.lastname }}</h4> </br>
+        <h3><b>Gender :</b></h3> <h4> {{ item.gender }}</h4> </br>
+        <h3><b>Office :</b></h3> <h4> {{ item.office }}</h4> </br>
+        <h3><b>Designation :</b></h3> <h4> {{ item.designation }}</h4> </br>
+        <h3><b>Contact Details :</b></h3>
+        <h4>
+            {% for cont in item.contact %}
+                <h4><b>Contact Type :</b></h4> <h5> {{ cont.contacttype }} </h5>
+                <h4><b>Contact Number :</b></h4> <h5> {{ cont.contact }}</h5>
+            {% endfor %}
+
+        </h4> </br>
+
+        <h3><b>Emails :</b></h3>
+        <h4>
+            {% for eml in item.email %}
+                <h4><b>Email Type :</b></h4> <h5> {{ eml.emailtype }} </h5>
+                <h4><b>Email Address:</b></h4> <h5> {{ eml.email }}</h5>
+            {% endfor %}
+
+        </h4> </br>
+    {% endfor %}
+
+    <div style="">
+    </div><!--@div-->
+
+
+{% endblock %}

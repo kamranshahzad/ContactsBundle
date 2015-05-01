@@ -1,0 +1,52 @@
+{% extends themes %}
+
+
+{% block body %}
+
+    <!-- breadcrumb -->
+    <ol class="breadcrumb">
+        <li><a href="{{path('front_index')}}">Home</a></li>
+        <li class="active">Contacts</li>
+    </ol>
+    <!-- @breadcrumb -->
+
+    <!-- headings-->
+    <div class="section-header">
+        <h3 class="text-standard"><i class="fa fa-fw fa-arrow-circle-right text-gray-light"></i> Contacts <small> You can change all your details </small></h3>
+    </div>
+    <!-- @headings-->
+
+    <br/>
+
+    <div style="max-width: 450px">
+        <form action="{{ path('contacts_bulk') }}" method="post" role="form" {{ form_enctype(form) }}>
+            <div class="form-container">
+
+                {% if error  %}
+                    <div class="alert alert-danger" role="alert">
+                        <p class="message">{{error}}</p>
+                    </div>
+                {% endif %}
+
+                {{ form_widget(form._token) }}
+
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Select contact file:</label>
+                    {{ form_widget(form.input_file) }}
+                </div>
+
+                <div>
+                    <input type="submit" value="Upload" id="uploadcontact_btn" class="btn btn-info" />
+                </div>
+
+            </div>
+        </form>
+
+    </div><!--@row-->
+
+
+    <br/><br/>
+
+{% endblock %}
+
+

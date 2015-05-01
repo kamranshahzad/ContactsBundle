@@ -1,0 +1,171 @@
+{% block form_row %}
+    {% spaceless %}
+        {{ form_label(form) }}
+        {{ form_errors(form) }}
+        {{ form_widget(form) }}
+    {% endspaceless %}
+{% endblock form_row %}
+
+{% block employee_form_widget %}
+    <div class="row employee-container">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="exampleInputEmail1">Firstname:
+                    <span class="redMark">*</span>&nbsp;
+                    <a data-toggle="tooltip" data-placement="top" title="Enter firstname" ><span class="glyphicon glyphicon-question-sign"></span></a>
+                </label>
+                {{ form_row(form.firstname) }}
+            </div>
+            <div class="form-group">
+                <label for="">Designation:
+                    <span class="redMark">*</span>&nbsp;
+                    <a data-toggle="tooltip" data-placement="top" title="Enter designation" ><span class="glyphicon glyphicon-question-sign"></span></a>
+                </label>
+                {{ form_row(form.designation) }}
+            </div>
+            <div class="form-group">
+                <label for="">Address:
+                    <span class="redMark">*</span>&nbsp;
+                    <a data-toggle="tooltip" data-placement="top" title="Enter address" ><span class="glyphicon glyphicon-question-sign"></span></a>
+                </label>
+                {{ form_row(form.address) }}
+            </div>
+        </div><!--@col-md-6-->
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="exampleInputEmail1">Lastname:
+                    <span class="redMark">*</span>&nbsp;
+                    <a data-toggle="tooltip" data-placement="top" title="Enter lastname" ><span class="glyphicon glyphicon-question-sign"></span></a>
+                </label>
+                {{ form_row(form.lastname) }}
+            </div>
+            <div class="form-group">
+                <label for="">Office:
+                    <span class="redMark">*</span>&nbsp;
+                    <a data-toggle="tooltip" data-placement="top" title="Enter office" ><span class="glyphicon glyphicon-question-sign"></span></a>
+                </label>
+                {{ form_row(form.office) }}
+            </div>
+            <div class="form-group">
+                {{ form_row(form.gender) }}
+            </div>
+
+        </div><!--@col-md-6-->
+    </div>
+
+
+    <div class="row emergency-container">
+        <h4>Emergency Contact</h4>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="exampleInputEmail1">Name of Person:
+                    <span class="redMark">*</span>&nbsp;
+                    <a data-toggle="tooltip" data-placement="top" title="Enter person name" ><span class="glyphicon glyphicon-question-sign"></span></a>
+                </label>
+                {{ form_row(form.emergencyName) }}
+            </div>
+            <div class="form-group">
+                <label for="exampleInputEmail1">Relationship:
+                    <span class="redMark">*</span>&nbsp;
+                    <a data-toggle="tooltip" data-placement="top" title="Enter relationship with contact person." ><span class="glyphicon glyphicon-question-sign"></span></a>
+                </label>
+                {{ form_row(form.emergencyRelation) }}
+            </div>
+        </div><!--@col-md-6-->
+        <div class="col-md-6">
+            <div class="form-group">
+                <label for="exampleInputEmail1">Contact No:
+                    <span class="redMark">*</span>&nbsp;
+                    <a data-toggle="tooltip" data-placement="top" title="Enter contact no" ><span class="glyphicon glyphicon-question-sign"></span></a>
+                </label>
+                {{ form_row(form.emergencyContact) }}
+            </div>
+        </div><!--@col-md-6-->
+    </div>
+
+
+    <div class="row" style="padding: 10px;">
+            <!--contacts-->
+            <h4>All Contacts </h4>
+            {{ form_widget(form.contacts) }}
+            <div class="form-group">
+                <button type="button" id="addEmployeeContactBtn" class="btn btn-warning btn-sm">Add Contact</button>
+                <button type="button" id="removeEmployeeContactBtn" class="btn btn-danger btn-sm">Remove Contact</button>
+            </div>
+            <!--@contacts-->
+    </div>
+
+
+    <div class="row" style="padding: 10px;">
+            <!--emails-->
+            <h4>All Emails</h4>
+            {{ form_widget(form.emails) }}
+            <div class="form-group">
+                <button type="button" id="addEmployeeEmailBtn" class="btn btn-warning btn-sm">Add Email</button>
+                <button type="button" id="removeEmployeeEmailBtn" class="btn btn-danger btn-sm">Remove Email</button>
+            </div>
+            <!--@emails-->
+    </div>
+
+
+{% endblock %}
+
+
+{% block contact_form_widget %}
+    {% spaceless %}
+        <div class="contact-container" id="__contactid__" >
+            <h5 >Contact Information</h5>
+            <div class="form-group" style="margin-bottom:10px;">
+                <div class="row">
+                    {% set types = ['Unspecified' , 'Cell' , 'Landline' ,'Office','Home'] %}
+                    {% set fieldNum = 0 %}
+                    {% for child in form.numberType %}
+                        <div class="col-md-2" >
+                            {{ form_row(child) }}
+                            <b>
+                                {{ attribute(types, fieldNum) }}
+                            </b>
+                        </div>
+                        {% set fieldNum = fieldNum + 1 %}
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="form-group phone-container">
+                {{ form_errors(form.phoneNumber) }}
+                {{ form_widget(form.countryCode) }}&nbsp;{{ form_widget(form.officeExtension) }}&nbsp;{{ form_widget(form.phoneNumber) }}
+
+            </div>
+        </div><!--@code-container-->
+    {% endspaceless %}
+{% endblock %}
+
+{% block email_form_widget %}
+    {% spaceless %}
+        <div class="email-container" id="__emailid__" >
+            <h5 >Email</h5>
+            <div class="form-group" style="margin-bottom:10px;">
+                <div class="row">
+                    {% set types = [ 'Unspecified' , 'Personal' , 'Official' ] %}
+                    {% set fieldNum = 0 %}
+                    {% for child in form.emailType %}
+                        <div class="col-md-3" >
+                            {{ form_row(child) }}
+                            <b>
+                                {{ attribute(types, fieldNum) }}
+                            </b>
+                        </div>
+                        {% set fieldNum = fieldNum + 1 %}
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="form-group">
+                {{ form_errors(form.email) }}
+                {{ form_widget(form.email) }}
+            </div>
+        </div><!--@code-container-->
+    {% endspaceless %}
+{% endblock %}
+
+
+
+

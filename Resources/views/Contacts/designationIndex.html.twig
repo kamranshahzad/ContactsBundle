@@ -1,0 +1,112 @@
+{% extends themes %}
+
+
+{% block body %}
+
+    <style type="text/css">
+        .grid {
+            font-size: 13px;
+        }
+    </style>
+
+<!-- breadcrumb -->
+<ol class="breadcrumb">
+    <li><a href="{{path('front_index')}}">Home</a></li>
+    <li class="active">Contacts</li>
+</ol>
+<!-- @breadcrumb -->
+
+<!-- headings-->
+<div class="section-header">
+    <h3 class="text-standard"><i class="fa fa-fw fa-arrow-circle-right text-gray-light"></i> Contacts Designations<small> You can change all your details </small></h3>
+</div>
+<!-- @headings-->
+
+    <div ng-controller="DesignationCtrl">
+        <div id="grid1" ui-grid="gridOptions" class="grid"></div>
+    </div>
+
+
+    <div ng-app="directoryApp" >
+
+        <div class="gridContainer" ng-controller="DemoCtrl">
+
+            <table ng-table="tableParams" show-filter="true" class="table ng-table-responsive table-bordered">
+                <tr ng-repeat="designation in $data" ng-class-odd="odd" ng-class-even="even">
+                    <td data-title="'Name'" sortable="'name'" filter="{ 'name': 'text' }">
+                        {[designation.name]}
+                    </td>
+                    <td data-title="'Designation'" sortable="'designation'" filter="{ 'designation': 'text' }" >
+                        {[designation.designation]}
+                    </td>
+                    <td data-title="'Actions'" width="200">
+                        <a href="editdesignation/{[designation.id]}" class="btn btn-default btn-xs">
+                            <i class="fa fa-edit"></i>&nbsp;Edit
+                        </a>
+                        <a href="removedesignation/{[designation.id]}" onclick="return confirm('Are you sure you want to delete this Designation?');" class="btn btn-default btn-xs">
+                            <i class="fa fa-times"></i>&nbsp;Remove
+                        </a>
+                    </td>
+                </tr>
+            </table>
+
+        </div><!--directoryApp-->
+
+        <script>
+            function modifyUsers(id){
+                console.log('Output:'+id);
+            }
+            var app = angular.module('directoryApp', ['ngTable','ngResource'])
+                    .config(function($interpolateProvider) {
+                        $interpolateProvider.startSymbol('{[').endSymbol(']}');
+                    })
+                    .controller('DemoCtrl', function($scope, $resource , $filter, $q , ngTableParams) {
+                        var serviceUrl = Routing.generate('api.contacts.designations.all');
+                        var all_designations = $resource(serviceUrl);
+
+                        $scope.modifyUsers = function(id){
+                            console.log("Result:"+id);
+                        }
+
+                        $scope.tableParams = new ngTableParams({
+                            page: 1,            // show first page
+                            count: 10
+                        }, {
+                            total: 0,
+                            getData: function($defer, params) {
+                                all_designations.query(function(data) {
+                                    /*var orderedData = params.filter() ?
+                                     $filter('filter')(data, params.filter()) :
+                                     data;
+                                     $scope.users = orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count());
+                                     params.total(orderedData.length); // set total for recalc pagination
+                                     $defer.resolve($scope.users);*/
+
+                                    /*
+                                     var orderedData = params.sorting() ?
+                                     $filter('orderBy')(data, params.orderBy()) :
+                                     data;
+                                     $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+                                     */
+
+                                    var filteredData = params.filter() ?
+                                            $filter('filter')(data, params.filter()) :
+                                            data;
+                                    var orderedData = params.sorting() ?
+                                            $filter('orderBy')(filteredData, params.orderBy()) :
+                                            data;
+
+                                    params.total(orderedData.length); // set total for recalc pagination
+                                    $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+
+                                });
+                            }
+                        });
+
+                    })
+        </script>
+
+    </div>
+
+
+{% endblock %}

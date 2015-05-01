@@ -1,0 +1,293 @@
+{% extends themes %}
+
+
+{% block body %}
+    <style type="text/css">
+        .form-group {
+            margin-bottom: 5px;
+        }
+        .wrapper {
+            background:#EFEFEF;
+            box-shadow: 1px 1px 10px #999;
+            /*margin: auto;*/
+            /*text-align: center;*/
+            position: relative;
+            -webkit-border-radius: 5px;
+            -moz-border-radius: 5px;
+            border-radius: 5px;
+            margin-bottom: 20px !important;
+            width: 100%;
+            padding: 5px;
+        }
+        .scrolls {
+            overflow-x: scroll;
+            overflow-y: hidden;
+            height: 380px;
+            white-space:nowrap;
+            border-collapse:separate;border-spacing:5px;
+        }
+
+        .data-col {
+            width: 250px;
+            display:table-cell;
+            background-color: #ffffff;
+            margin: 5px;
+            border-radius: 5px;
+            border: solid 1px rgba(121, 121, 121, 0.53);
+        }
+
+        .wrapper .activeCol { border: solid 2px #FF0000;}
+        .wrapper .activeCol ul li {background-color: #FF0000; color:#ffffff;}
+
+        .data-col .header { padding: 8px; border-bottom: solid 1px #dbdbdb; height: 125px; width:230px; }
+        .data-col .header a { font-size: 13px;}
+        .data-col .header h5 { font-weight: bold;}
+        .data-col .header h5 span { color:#008800; }
+        .data-col ul { list-style: none; margin: 0px; padding: 0px; font-size: 13px;}
+        .data-col ul li { padding: 6px; border-bottom: solid 1px #dbdbdb; background-color: #e8e8e8; text-wrap:none;}
+        .data-col ul li:last-child { border-bottom: none; }
+    </style>
+
+<!-- breadcrumb -->
+<ol class="breadcrumb">
+    <li><a href="{{path('front_index')}}">Home</a></li>
+    <li class="active">Contacts</li>
+</ol>
+<!-- @breadcrumb -->
+
+<!-- headings-->
+<div class="section-header">
+    <h3 class="text-standard"><i class="fa fa-fw fa-arrow-circle-right text-gray-light"></i> Contacts Bulk Uploads <small> You can change all your details </small></h3>
+</div>
+<!-- @headings-->
+
+    <br/><br/>
+
+    <div class="wrapper">
+        <div class="scrolls" id="excelSheetColumns">
+        <!--content-->
+        <!--@content-->
+        </div>
+    </div>
+
+    <div class="form-group">
+        <input type="submit" class="btn btn-info" value="Save Contacts..." id="saveBulkContactsBtn" >
+    </div>
+
+
+    <br/>
+
+    <form action="{{ path('contacts_bulk_save') }}" method="post">
+    </form>
+
+
+    <div id="columnWrapper">
+        <!--columnWrapper-->
+        <!--@columnWrapper-->
+    </div>
+
+
+    <script type="text/javascript">
+
+
+
+        var options = {"firstname":"Firstname","lastname":"Lastname","username":"Username","gender":"Gender","emails":"Emails" ,"contacts":"Contacts", "address":"Address"};
+        var whichActive = 0;
+        var chooseOptions = [];
+        var columnTitle = "Column Name";
+        var totalColumns = 0;
+        var sheetFile = '{{ file }}';
+
+
+        $(function(){
+           loadSheet();
+
+           $('#saveBulkContactsBtn').click(function(event){
+               var colTitles = $('#excelSheetColumns .data-col h5');
+               var url = Routing.generate('contacts.bulk_sheet.save');
+               var mappedColumns = [];
+               $.each(colTitles, function(key, val) {
+                   var selector = $(val);
+                   var columnName = selector.data('item');
+                   var columnNo   = selector.data('id');
+                   if(columnName){
+                       mappedColumns[columnNo] = columnName;
+                   }
+               });
+
+               $.ajax({
+                   url: url,
+                   data: {
+                       columns: mappedColumns,
+                       sheetfile: sheetFile
+                   },
+                   type: "POST",
+                   dataType : "json",
+                   success: function( json ) {
+                       console.log(json);
+                   },
+                   error: function( xhr, status, errorThrown ) {
+                       console.log( "Sorry, there was a problem!" );
+                       console.log( "Error: " + errorThrown );
+                       console.log( "Status: " + status );
+                       console.dir( xhr );
+                   },
+                   complete: function( xhr, status ) {
+                       //console.log( "The request is complete!" );
+                   }
+               });
+
+            });
+
+        });
+
+        function loadSheet(){
+            var url = Routing.generate('api.get_sheet.read',{'file':sheetFile});
+            $.getJSON(url, function(data) {
+                drawGridColumns(data);
+            });
+        }
+
+        function drawGridColumns(sheetData){
+            var _html = '';
+            var sheetColData = [];
+            var pointer = 1;
+            $.each(sheetData, function(key, val) {
+
+                totalColumns = totalColumns+1;
+                _html += '<div class="data-col" id="COL_'+pointer+'">';
+                _html += '<div class="header">';
+                    _html += '<h5 data-item="" data-id="'+pointer+'">'+columnTitle+'</h5>';
+
+                    _html += '<div class="unactiveWrapper">';
+                    _html += '<button class="btn btn-default editBtn" data-id="'+pointer+'" >Change</button>';
+                    _html += '&nbsp;';
+                    _html += '<button class="btn btn-default resetBtn" data-id="'+pointer+'">Reset</button>';
+                    //_html += '<a class="editBtn" href="#" data-id="'+pointer+'" >Change</a>';
+                    //_html += '&nbsp;&nbsp;|&nbsp;&nbsp;';
+                    //_html += '<a class="resetBtn" href="#" data-id="'+pointer+'" >Reset</a>';
+                    _html += '</div>'; //@unactiveWrapper
+
+                    _html += '<div class="activeWrapper" >';
+                    _html += drawDropdown(pointer);
+                    _html += '<button class="btn btn-info BackBtn" data-id="'+pointer+'">< Cancel</button>';
+                    _html += '&nbsp;';
+                    _html += '<button class="btn btn-info SaveBtn" data-id="'+pointer+'">Save ></button>';
+                    _html += '</div>'; //@activeWrapper
+
+                _html += '</div>';
+                _html += '<ul>';
+                val.forEach(function(value, index, ar){
+                    _html += '<li>'+value+'</li>';
+                });
+                _html += '</ul>';
+                _html += '</div>';
+
+                pointer++;
+            });
+
+            $('#excelSheetColumns').html(_html);
+            $('#excelSheetColumns .activeWrapper').hide();
+            $('#excelSheetColumns .unactiveWrapper .resetBtn').hide(); //hide all reset buttons
+
+
+            //events
+            $( "#excelSheetColumns .SaveBtn" ).bind( "click", function( event ) {
+                onSave($(this));
+            });
+            $( "#excelSheetColumns .BackBtn" ).bind( "click", function( event ) {
+                onBack($(this));
+            });
+            $( "#excelSheetColumns .editBtn" ).bind( "click", function( event ) {
+                //event.preventDefault();
+                onEdit($(this));
+            });
+            $( "#excelSheetColumns .resetBtn" ).bind( "click", function( event ) {
+                //event.preventDefault();
+                onReset($(this));
+            });
+
+
+        }//@drawGridColumns
+
+
+        //events
+        function onEdit(target){
+            var id = target.data('id');
+            _activateColumnLayer(id);
+        }
+        function onSave(target){
+            var id = target.data('id');
+            var selectedIndex = $("#ColName_"+id).val();
+            var selectedLabel = $("#ColName_"+id+" option:selected").text();
+            $('#COL_'+ id +' h5').html('<span>'+selectedLabel+'</span>');
+            $('#COL_'+ id +' h5').data( "item", selectedIndex );
+
+            chooseOptions.push(selectedIndex);
+            $(".columnOptions option[value='"+selectedIndex+"']").remove();
+
+            //move next
+            //var nextColumnId = id+1;
+            //_activateColumnLayer(nextColumnId);
+            _activateColumnLayer(0);
+
+            $('#COL_'+ id + ' .unactiveWrapper .editBtn').hide();
+            $('#COL_'+ id + ' .unactiveWrapper .resetBtn').show();
+
+        }
+
+        function onBack(target){
+            var id = target.data('id');
+            //console.log('Hello');
+            //var backColumnId = id-1;
+            //_activateColumnLayer(backColumnId);
+            _activateColumnLayer(0);
+        }
+
+        function onReset(target){
+            var id = target.data('id');
+
+            if(chooseOptions.length > 0){
+                var item = $('#COL_'+ id +' h5').data("item");
+                var index  = chooseOptions.indexOf(item);
+                chooseOptions.splice(index,1);
+                $('.columnOptions').append($('<option>', {
+                    value: item,
+                    text: options[item]
+                }));
+                $('#COL_'+ id +' h5').html(columnTitle);
+                $('#COL_'+ id +' h5').data('item','');
+            }
+
+            _activateColumnLayer(id);
+        }
+
+
+        // _helper functions
+        function _activateColumnLayer(id){
+
+            $('#COL_'+ id +' .activeWrapper').show();
+            $('#COL_'+ id +' .unactiveWrapper').hide();
+            $('#COL_'+ id).addClass('activeCol');
+
+            for(var i=1; i <= totalColumns; i++){
+                if(id == i) continue;
+                $('#COL_'+ i +' .activeWrapper').hide();
+                $('#COL_'+ i +' .unactiveWrapper').show();
+                $('#COL_'+i).removeClass('activeCol');
+            }
+        }
+
+        function drawDropdown(id){
+            var _template = '<div class="form-group">';
+            _template += '<select id="ColName_'+id+'" class="form-control columnOptions">';
+            for(var index in options) {
+                _template += '<option value="'+index+'">'+options[index]+'</option>';
+            }
+            _template += '</select>';
+            _template += '</div>';
+            return _template;
+        }
+
+    </script>
+{% endblock %}

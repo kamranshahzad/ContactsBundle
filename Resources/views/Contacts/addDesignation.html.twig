@@ -1,0 +1,55 @@
+{% extends themes %}
+
+
+{% block body %}
+
+  <!-- breadcrumb -->
+    <ol class="breadcrumb">
+        <li><a href="{{path('front_index')}}">Home</a></li>
+        <li class="active">Designations</li>
+    </ol>
+    <!-- @breadcrumb -->
+
+    <!-- headings-->
+    <div class="section-header">
+        <h3 class="text-standard"><i class="fa fa-fw fa-arrow-circle-right text-gray-light"></i> Add Designations <small> Detail of form..</small></h3>
+    </div>
+    <!-- @headings-->
+
+    <br>
+
+    <div style="max-width: 450px">
+        <form class="entity" action="{{ path('contacts_designation_add') }}" method="post" {{ form_enctype(form) }} >
+
+            <div class="form-group">
+                <label for="exampleInputEmail1">
+                    Name:
+                    <span class="redMark">*</span>&nbsp;
+                    <a data-toggle="tooltip" data-placement="top" title="Enter name." ><span class="glyphicon glyphicon-question-sign"></span></a>
+                </label>
+                {{ form_widget(form.name) }}
+            </div>
+
+            <div class="form-group">
+                <label for="exampleInputEmail1">
+                    Title:
+                    <span class="redMark">*</span>&nbsp;
+                    <a data-toggle="tooltip" data-placement="top" title="Enter title." ><span class="glyphicon glyphicon-question-sign"></span></a>
+                </label>
+                {{ form_widget(form.title) }}
+            </div>
+
+            <div>
+                <input type="submit" value="Save Designation" id="changepassword_btn" class="btn btn-info" />
+            </div>
+
+            <br/>
+
+
+        </form>
+    </div><!--@div-->
+
+  <br/>
+
+
+{% endblock %}

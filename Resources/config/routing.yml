@@ -1,0 +1,3 @@
+_cogilent_contacts_urls:
+  resource: "@CogilentContactsBundle/Controller"
+  type: annotation

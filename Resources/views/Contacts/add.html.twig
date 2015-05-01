@@ -1,0 +1,118 @@
+{% extends themes %}
+
+
+{% block body %}
+
+    <style type="text/css">
+        #employee_form_gender label { margin: 0 20px 0 5px; font-weight: normal; font-size: 14px;}
+        .employee-container select { width: 300px !important;}
+        .phone-container .form-control { display: inline-block !important; }
+        .phone-container select { width: 200px !important;}
+        .phone-container .form-control:nth-child(2) {width:65px !important;}
+        .phone-container .form-control:nth-child(3) {width:180px !important;}
+
+        .emergency-container { padding: 10px; background-color: #F6F6F6; border-radius: 5px;}
+        .email-container .form-control { width: 360px;}
+    </style>
+
+    <!-- breadcrumb -->
+    <ol class="breadcrumb">
+        <li><a href="{{path('front_index')}}">Home</a></li>
+        <li class="active">Contacts</li>
+    </ol>
+    <!-- @breadcrumb -->
+
+    <!-- headings-->
+    <div class="section-header">
+        <h3 class="text-standard"><i class="fa fa-fw fa-arrow-circle-right text-gray-light"></i> Add Employee <small> Add employees with multiple contacts</small></h3>
+    </div>
+    <!-- @headings-->
+
+    <br/><br/>
+
+    <div style="">
+      <form class="entity" action="{{ path('contacts_add') }}" method="post" {{ form_enctype(form) }} >
+
+          {{ form_widget(form._token) }}
+
+          {{ form_widget(form) }}
+
+          <div class="form-group">
+              <button type="submit" class="btn btn-primary">Save Employee</button>
+          </div>
+
+      </form>
+    </div><!--@div-->
+    <script type="text/javascript">
+
+        jQuery(document).ready(function() {
+            addEmployeeForm();
+            addEmailForm();
+        });
+
+        var _pointer = 0, _pointer1 = 0;
+
+
+
+        $('#addEmployeeContactBtn').click(function(event){
+            addEmployeeForm();
+        });
+        $('#removeEmployeeContactBtn').click(function(event){
+          if(_pointer > 0){
+            $('#contactContainer-'+_pointer).remove();
+            _pointer--;
+          }
+          if(_pointer <= 3){
+                $('#addEmployeeContactBtn').show();
+          }
+        });
+
+
+        function addEmployeeForm() {
+            var collectionHolder = $('#employee_form_contacts');
+            var pointer = collectionHolder.children('.contact-container').length;
+            var prototype = collectionHolder.attr('data-prototype');
+            var form = prototype.replace(/__contactid__/g, 'contactContainer-'+pointer);
+            form = form.replace(/__name__/g, pointer);
+            _pointer = pointer;
+            collectionHolder.append(form);
+            collectionHolder.find('label').remove();
+            //$('#employee_form_contacts_'+_pointer+'_officeExtension').hide();
+            if(_pointer>3){
+                $('#addEmployeeContactBtn').hide();
+            }
+        }
+
+
+
+
+        $('#addEmployeeEmailBtn').click(function(event){
+            addEmailForm();
+        });
+        $('#removeEmployeeEmailBtn').click(function(event){
+            if(_pointer1 > 0){
+                $('#emailContainer-'+_pointer1).remove();
+                _pointer1--;
+            }
+            if(_pointer1 <= 3){
+                $('#addEmployeeEmailBtn').show();
+            }
+        });
+
+        function addEmailForm() {
+            var collectionHolder = $('#employee_form_emails');
+            var pointer1 = collectionHolder.children('.email-container').length;
+            var prototype1 = collectionHolder.attr('data-prototype');
+            var form = prototype1.replace(/__emailid__/g, 'emailContainer-'+pointer1);
+            form = form.replace(/__name__/g, pointer1);
+            _pointer1 = pointer1;
+            collectionHolder.append(form);
+            collectionHolder.find('label').remove();
+            if(_pointer1>3){
+                $('#addEmployeeEmailBtn').hide();
+            }
+        }
+    </script>
+
+
+{% endblock %}
