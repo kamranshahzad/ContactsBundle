@@ -1,19 +1,19 @@
 <?php
 
-namespace Cogilent\ContactsBundle\Entity;
+namespace Kamran\ContactsBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\JoinColumn;
 
-use Cogilent\OrganizationBundle\Entity\Office;
-use Cogilent\OrganizationBundle\Entity\Organization;
+use Kamran\OrganizationBundle\Entity\Office;
+use Kamran\OrganizationBundle\Entity\Organization;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="employee")
- * @ORM\Entity(repositoryClass="Cogilent\ContactsBundle\Entity\Repository\EmployeeRepository")
+ * @ORM\Entity(repositoryClass="Kamran\ContactsBundle\Entity\Repository\EmployeeRepository")
  */
 class Employee
 {
@@ -52,13 +52,13 @@ class Employee
     private $designation;
 
     /**
-     * @ManyToOne(targetEntity="Cogilent\OrganizationBundle\Entity\Office")
+     * @ManyToOne(targetEntity="Kamran\OrganizationBundle\Entity\Office")
      * @JoinColumn(name="office_id", referencedColumnName="id")
      **/
     private $office;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Cogilent\OrganizationBundle\Entity\Organization", inversedBy="employees")
+     * @ORM\ManyToOne(targetEntity="Kamran\OrganizationBundle\Entity\Organization", inversedBy="employees")
      * @ORM\JoinColumn(name="organization_id", referencedColumnName="id")
      * @var type
      */

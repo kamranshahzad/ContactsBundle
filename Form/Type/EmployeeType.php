@@ -1,6 +1,6 @@
 <?php
 
-namespace Cogilent\ContactsBundle\Form\Type;
+namespace Kamran\ContactsBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -43,7 +43,7 @@ class EmployeeType extends AbstractType
         ));
 
         $builder->add('designation', 'entity', array(
-            'class' => 'CogilentContactsBundle:Designation',
+            'class' => 'KamranContactsBundle:Designation',
             'property' => 'name',
             'label' => false,
             'attr' => array(
@@ -52,7 +52,7 @@ class EmployeeType extends AbstractType
         ));
 
         $builder->add('office', 'entity', array(
-            'class' => 'CogilentOrganizationBundle:Office',
+            'class' => 'KamranOrganizationBundle:Office',
             'property' => 'name',
             'label' => false,
             'attr' => array(
@@ -102,7 +102,7 @@ class EmployeeType extends AbstractType
 
     public function setDefaultOptions(OptionsResolverInterface $resolver) {
         $resolver->setDefaults(array(
-            'data_class' => 'Cogilent\ContactsBundle\Entity\Employee',
+            'data_class' => 'Kamran\ContactsBundle\Entity\Employee',
         ));
     }
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Cogilent\ContactsBundle\Entity\Repository;
+namespace Kamran\ContactsBundle\Entity\Repository;
 
 
 use Doctrine\ORM\EntityRepository;

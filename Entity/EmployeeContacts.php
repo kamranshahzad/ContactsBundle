@@ -1,6 +1,6 @@
 <?php
 
-namespace Cogilent\ContactsBundle\Entity;
+namespace Kamran\ContactsBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;

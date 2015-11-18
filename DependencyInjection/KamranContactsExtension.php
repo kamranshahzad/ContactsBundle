@@ -1,6 +1,6 @@
 <?php
 
-namespace Cogilent\ContactsBundle\DependencyInjection;
+namespace Kamran\ContactsBundle\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
@@ -12,7 +12,7 @@ use Symfony\Component\DependencyInjection\Loader;
  *
  * To learn more see {@link http://symfony.com/doc/current/cookbook/bundles/extension.html}
  */
-class CogilentContactsExtension extends Extension
+class KamranContactsExtension extends Extension
 {
     /**
      * {@inheritdoc}
@@ -28,7 +28,7 @@ class CogilentContactsExtension extends Extension
 
         $container->setParameter('twig.form.resources', array_merge(
             $container->getParameter('twig.form.resources'),
-            array('CogilentContactsBundle:Form:bootstrap.html.twig')
+            array('KamranContactsBundle:Form:bootstrap.html.twig')
         ));
 
 

@@ -1,10 +1,10 @@
 <?php
 
-namespace Cogilent\ContactsBundle\Entity;
+namespace Kamran\ContactsBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-use Cogilent\ContactsBundle\Entity\Employee;
+use Kamran\ContactsBundle\Entity\Employee;
 
 
 /**
@@ -25,7 +25,7 @@ class EmployeeEmail
     private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="Cogilent\ContactsBundle\Entity\Employee", inversedBy="emails")
+     * @ORM\ManyToOne(targetEntity="Kamran\ContactsBundle\Entity\Employee", inversedBy="emails")
      * @ORM\JoinColumn(name="employee_id", referencedColumnName="id")
      * @var type
      */

@@ -1,9 +1,0 @@
-<layout>
-
-    <regions>
-        <sidebar>
-            <contacts_links rule="/contacts" template="contacts-sidebar.html.twig">FOOTER_CLASS</contacts_links>
-        </sidebar>
-    </regions>
-
-</layout>

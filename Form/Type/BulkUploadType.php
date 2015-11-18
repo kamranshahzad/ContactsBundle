@@ -1,6 +1,6 @@
 <?php
 
-namespace Cogilent\ContactsBundle\Form\Type;
+namespace Kamran\ContactsBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;

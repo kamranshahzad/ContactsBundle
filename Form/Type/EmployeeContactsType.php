@@ -1,6 +1,6 @@
 <?php
 
-namespace Cogilent\ContactsBundle\Form\Type;
+namespace Kamran\ContactsBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -306,7 +306,7 @@ class EmployeeContactsType extends AbstractType
 
     public function setDefaultOptions(OptionsResolverInterface $resolver) {
         $resolver->setDefaults(array(
-            'data_class' => 'Cogilent\ContactsBundle\Entity\EmployeeContacts',
+            'data_class' => 'Kamran\ContactsBundle\Entity\EmployeeContacts',
         ));
     }
 

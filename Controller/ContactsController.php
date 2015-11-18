@@ -1,6 +1,6 @@
 <?php
 
-namespace Cogilent\ContactsBundle\Controller;
+namespace Kamran\ContactsBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -9,13 +9,13 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Session\Session;
 
-use Cogilent\ContactsBundle\Entity\Employee;
-use Cogilent\ContactsBundle\Entity\EmployeeContacts;
-use Cogilent\ContactsBundle\Entity\Designation;
-use Cogilent\ContactsBundle\Form\Type\EmployeeType;
-use Cogilent\ContactsBundle\Form\Type\EmployeeContactsType;
-use Cogilent\ContactsBundle\Form\Type\BulkUploadType;
-use Cogilent\ContactsBundle\Form\Type\DesignationType;
+use Kamran\ContactsBundle\Entity\Employee;
+use Kamran\ContactsBundle\Entity\EmployeeContacts;
+use Kamran\ContactsBundle\Entity\Designation;
+use Kamran\ContactsBundle\Form\Type\EmployeeType;
+use Kamran\ContactsBundle\Form\Type\EmployeeContactsType;
+use Kamran\ContactsBundle\Form\Type\BulkUploadType;
+use Kamran\ContactsBundle\Form\Type\DesignationType;
 
 
 
@@ -41,7 +41,7 @@ class ContactsController extends Controller
      */
     public function detailsAction(Request $request,$id){
         $em = $this->getDoctrine()->getManager();
-        $entity = $em->getRepository("CogilentContactsBundle:Employee")->findAll();
+        $entity = $em->getRepository("KamranContactsBundle:Employee")->findAll();
         $outputArray = array();
 
 
@@ -53,9 +53,9 @@ class ContactsController extends Controller
                 $contactcount = 0;
                 $emailsubarray = array();
                 $contactsubarray = array();
-                //$office = $em->getRepository("CogilentOrganizationBundle:Office")->find($obj->getId());
-                $email = $em->getRepository("CogilentContactsBundle:EmployeeEmail")->findAll();
-                $contact = $em->getRepository("CogilentContactsBundle:EmployeeContacts")->findAll();
+                //$office = $em->getRepository("KamranOrganizationBundle:Office")->find($obj->getId());
+                $email = $em->getRepository("KamranContactsBundle:EmployeeEmail")->findAll();
+                $contact = $em->getRepository("KamranContactsBundle:EmployeeContacts")->findAll();
                 $array['id']    = $obj->getId();
                 $array['firstname']  = $obj->getFirstname();
                 $array['lastname']  = $obj->getLastname();
@@ -138,7 +138,7 @@ class ContactsController extends Controller
     public function editAction($id, Request $request) {
 
         $em = $this->getDoctrine()->getManager();
-        $entity = $em->getRepository('CogilentContactsBundle:Employee')->findOneBy(array('id' => $id));
+        $entity = $em->getRepository('KamranContactsBundle:Employee')->findOneBy(array('id' => $id));
 
         $form = $this->createForm(new EmployeeType(), $entity);
         //$request = $this->getRequest();
@@ -179,23 +179,23 @@ class ContactsController extends Controller
 
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository("CogilentContactsBundle:Employee")->find($id);
+        $entity = $em->getRepository("KamranContactsBundle:Employee")->find($id);
         if (!$entity) {
             throw $this->createNotFoundException('Employee with id=' . $id . ' not found');
         }
-        $email = $em->getRepository("CogilentContactsBundle:EmployeeEmail")->findAll();
-        $contact = $em->getRepository("CogilentContactsBundle:EmployeeContacts")->findAll();
+        $email = $em->getRepository("KamranContactsBundle:EmployeeEmail")->findAll();
+        $contact = $em->getRepository("KamranContactsBundle:EmployeeContacts")->findAll();
 
         foreach ($email as $emails) {
             if($emails->getEmployee()->getId() == $id){
 
-                $entityemail = $em->getRepository("CogilentContactsBundle:EmployeeEmail")->find($emails->getId());
+                $entityemail = $em->getRepository("KamranContactsBundle:EmployeeEmail")->find($emails->getId());
                 $em->remove($entityemail);
             }
         }
         foreach ($contact as $contacts) {
             if($contacts->getEmployee()->getId() == $id){
-                $entitycontact = $em->getRepository("CogilentContactsBundle:EmployeeContacts")->find($contacts->getId());
+                $entitycontact = $em->getRepository("KamranContactsBundle:EmployeeContacts")->find($contacts->getId());
                 $em->remove($entitycontact);
             }
         }
@@ -213,7 +213,7 @@ class ContactsController extends Controller
      * @Template()
      */
     public function bulkAction(Request $request){
-        $form = $this->createForm(new \Cogilent\UserBundle\Form\BulkUploadType());
+        $form = $this->createForm(new \Kamran\UserBundle\Form\BulkUploadType());
         $form->handleRequest($request);
         $message = '';
 
@@ -309,7 +309,7 @@ class ContactsController extends Controller
      */
     public function editDesignationAction(Request $request, $id){
         $em = $this->getDoctrine()->getManager();
-        $entity = $em->getRepository('CogilentContactsBundle:Designation')->findOneBy(array('id' => $id));
+        $entity = $em->getRepository('KamranContactsBundle:Designation')->findOneBy(array('id' => $id));
         $form = $this->createForm(new DesignationType(), $entity);
 
         if ($request->getMethod() === 'POST'){
@@ -332,7 +332,7 @@ class ContactsController extends Controller
     public function removeDesignationAction(Request $request, $id){
         $em = $this->getDoctrine()->getManager();
 
-        $entity = $em->getRepository("CogilentContactsBundle:Designation")->find($id);
+        $entity = $em->getRepository("KamranContactsBundle:Designation")->find($id);
         if (!$entity) {
             throw $this->createNotFoundException('Designation with id=' . $id . ' not found');
         }
@@ -340,7 +340,7 @@ class ContactsController extends Controller
         $em->remove($entity);
         $em->flush();
 
-        $this->get('session')->getFlashBag()->add('notice', 'Selected Designation removed successfully.');
+        $this->get('session')->getFlashBag()->add('notice', 'Selected designation removed successfully.');
         return $this->redirect($this->generateUrl('contacts_designation_index'));
     }
 

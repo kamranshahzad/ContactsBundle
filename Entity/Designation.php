@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Cogilent\ContactsBundle\Entity;
+namespace Kamran\ContactsBundle\Entity;
 
 
 

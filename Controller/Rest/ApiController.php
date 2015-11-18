@@ -1,6 +1,6 @@
 <?php
 
-namespace Cogilent\ContactsBundle\Controller\Rest;
+namespace Kamran\ContactsBundle\Controller\Rest;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -44,7 +44,7 @@ class ApiController extends FOSRestController
     public function getContactsAction(Request $request){
 
         $em = $this->getDoctrine()->getManager();
-        $entity = $em->getRepository("CogilentContactsBundle:Employee")->findAll();
+        $entity = $em->getRepository("KamranContactsBundle:Employee")->findAll();
         $outputArray = array();
 
 
@@ -54,9 +54,9 @@ class ApiController extends FOSRestController
             $contactcount = 0;
             $emailsubarray = array();
             $contactsubarray = array();
-            //$office = $em->getRepository("CogilentOrganizationBundle:Office")->find($obj->getId());
-            $email = $em->getRepository("CogilentContactsBundle:EmployeeEmail")->findAll();
-            $contact = $em->getRepository("CogilentContactsBundle:EmployeeContacts")->findAll();
+            //$office = $em->getRepository("KamranContactsBundle:Office")->find($obj->getId());
+            $email = $em->getRepository("KamranContactsBundle:EmployeeEmail")->findAll();
+            $contact = $em->getRepository("KamranContactsBundle:EmployeeContacts")->findAll();
             $array['id']    = $obj->getId();
             $array['firstname']  = $obj->getFirstname();
             $array['lastname']  = $obj->getLastname();
@@ -111,7 +111,7 @@ class ApiController extends FOSRestController
     public function getDesignationsAction(Request $request){
 
         $em = $this->getDoctrine()->getManager();
-        $entity = $em->getRepository("Cogilent\ContactsBundle\Entity\Designation")->findAll();
+        $entity = $em->getRepository("Kamran\ContactsBundle\Entity\Designation")->findAll();
         $outputArray = array();
 
         foreach($entity as $obj){
@@ -240,7 +240,7 @@ class ApiController extends FOSRestController
             $tableRowId = 1;
             $empRefArray = array();
             foreach ($dataArray as $columnNo => $rowArray) {
-                $empObject = new \Cogilent\ContactsBundle\Entity\Employee();
+                $empObject = new \Kamran\ContactsBundle\Entity\Employee();
                 foreach($mappedColumns as $mapColumnNo => $columnName){
                     if($columnName == 'gender'){
                         $empObject->setGender($genderShortArray[Util::value($rowArray[$mapColumnNo])]);
@@ -263,7 +263,7 @@ class ApiController extends FOSRestController
             foreach ($dataArray as $columnNo => $rowArray) {
                 foreach($mappedColumns as $mapColumnNo => $columnName){
 
-                    $empObject = $em->getRepository("Cogilent\ContactsBundle\Entity\Employee")->find($empRefArray[$columnNo]);
+                    $empObject = $em->getRepository("Kamran\ContactsBundle\Entity\Employee")->find($empRefArray[$columnNo]);
                     if($columnName == 'emails') {
                         $emailsArray = explode(',', $rowArray[$mapColumnNo]);
                         foreach ($emailsArray as $element) {
@@ -272,7 +272,7 @@ class ApiController extends FOSRestController
                             $emailStr = Util::value($emails[1]);
                             $tempArray[] = $emails;
                             if (array_key_exists($emailType, $emailShortArray)) {
-                                $emailObject = new \Cogilent\ContactsBundle\Entity\EmployeeEmail();
+                                $emailObject = new \Kamran\ContactsBundle\Entity\EmployeeEmail();
                                 $emailObject->setEmailType($emailShortArray[$emailType]);
                                 $emailObject->setEmail($emailStr);
                                 $emailObject->setEmployee($empObject);
@@ -288,7 +288,7 @@ class ApiController extends FOSRestController
                             $contactType = Util::value($contacts[0]);
                             $contactNo = Util::value($contacts[1]);
                             if(array_key_exists($contactType,$contactShortArray)){
-                                $contactObject = new \Cogilent\ContactsBundle\Entity\EmployeeContacts();
+                                $contactObject = new \Kamran\ContactsBundle\Entity\EmployeeContacts();
                                 $contactObject->setNumberType($contactShortArray[$contactType]);
                                 $contactObject->setPhoneNumber($contactNo);
                                 $contactObject->setEmployee($empObject);
